@@ -1,13 +1,12 @@
 import React, { ChangeEvent, FC, FormEvent, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   fetchAsyncMovies,
   fetchAsyncShows,
 } from "../../features/movies/movieSlice";
-// import user from "../../images/user.png";
 import "./Header.scss";
 import { useAppDispatch, useAppSelector } from "../../features/store";
+import { IMovies } from "../../interfaces/state";
 
 
 const Header: FC = () => {
@@ -22,7 +21,7 @@ const Header: FC = () => {
     if (term === "") {
       return alert("Please enter search term!");
     }
-    else if (movies.Response === "False" || shows.Response === "False") {
+    else if ((movies as IMovies).Response === "False" || (shows as IMovies).Response === "False") {
       alert("Searched movie or show is not found")
       window.location.reload()
     }
@@ -53,7 +52,6 @@ const Header: FC = () => {
       </div>
 
       <div className="user-image">
-        {/* <img src={user} alt="user" /> */}
       </div>
     </div>
   );

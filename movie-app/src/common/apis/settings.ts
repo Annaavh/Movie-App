@@ -1,4 +1,3 @@
-//11:20
 export const Settings = {
         dots: false,
         infinite: true,
