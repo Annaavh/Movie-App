@@ -1,11 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import movieApi from "../../common/apis/movieApi";
 import { APIKey } from "../../common/apis/MovieApiKey";
+import { IMovies, State } from "../../interfaces/state";
+import { IMovieDetail } from "../../interfaces/movies";
 
-//44:34
+
 export const fetchAsyncMovies = createAsyncThunk(
   "movies/fetchAsyncMovies",
-  async (term) => {
+  async (term: string): Promise<IMovies> => {
     const response = await movieApi.get(
       `?apikey=${APIKey}&s=${term}&type=movie`
     );
@@ -16,7 +18,7 @@ export const fetchAsyncMovies = createAsyncThunk(
 
 export const fetchAsyncShows = createAsyncThunk(
   "movies/fetchAsyncShows",
-  async (term) => {
+  async (term: string): Promise<IMovies> => {
     const response = await movieApi.get(
       `?apikey=${APIKey}&s=${term}&type=series`
     );
@@ -27,14 +29,13 @@ export const fetchAsyncShows = createAsyncThunk(
 
 export const fetchAsyncMoviesOrShowsDetail = createAsyncThunk(
   "movies/fetchAsyncMoviesOrShowsDetail",
-  async (id) => {
-    console.log(id, "id");
+  async (id: string | undefined): Promise<IMovieDetail> => {
     const response = await movieApi.get(`?apiKey=${APIKey}&i=${id}&Plot=full`);
     return response.data;
   }
 );
 
-const initialState = {
+const initialState: State = {
   movies: {},
   shows: {},
   selectedMoviesOrShowsDetail: {},
@@ -49,22 +50,22 @@ const movieSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchAsyncMovies.pending]: (state) => {
+    [fetchAsyncMovies.pending.type]: (state) => {
       console.log("Pending!");
       return { ...state, loading: true };
     },
-    [fetchAsyncMovies.fulfilled]: (state, { payload }) => {
+    [fetchAsyncMovies.fulfilled.type]: (state, { payload }) => {
       console.log("Fulfilled!");
       return { ...state, movies: payload, loading: false };
     },
-    [fetchAsyncMovies.rejected]: () => {
+    [fetchAsyncMovies.rejected.type]: () => {
       console.log("Rejected!");
     },
-    [fetchAsyncShows.fulfilled]: (state, { payload }) => {
+    [fetchAsyncShows.fulfilled.type]: (state, { payload }) => {
       console.log("Fulfilled!");
       return { ...state, shows: payload, loading: false };
     },
-    [fetchAsyncMoviesOrShowsDetail.fulfilled]: (state, { payload }) => {
+    [fetchAsyncMoviesOrShowsDetail.fulfilled.type]: (state, { payload }) => {
       console.log("Fulfilled!");
       return { ...state, selectedMoviesOrShowsDetail: payload };
     },
@@ -72,5 +73,4 @@ const movieSlice = createSlice({
 });
 
 export const { removeSelectedMovieOrShow } = movieSlice.actions;
-export const getAllMovies = (state) => state.movies.movies;
 export default movieSlice.reducer;

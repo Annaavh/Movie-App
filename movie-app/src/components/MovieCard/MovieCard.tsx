@@ -1,26 +1,26 @@
-import React from "react";
+import React, { FC } from "react";
 import { Link } from "react-router-dom";
 import "./MovieCard.scss";
+import { IMovie } from "../../interfaces/movies";
 
-function MovieCard({ data }) {
-  // console.log(data,"data")
+const MovieCard: FC<IMovie> = ({ Poster, Title, Year, imdbID }) => {
   return (
     <div className="card-item">
-      <Link to={`/movie/${data.imdbID}`}>
+      <Link to={`/movie/${imdbID}`}>
         <div className="card-inner">
           <div className="card-top">
-            <img src={data.Poster} alt={data.title} />
+            <img src={Poster} alt={Title} />
           </div>
           <div className="card-bottom">
             <div className="card-info">
-              <h4>{data.Title}</h4>
-              <p>{data.Year}</p>
+              <h4>{Title}</h4>
+              <p>{Year}</p>
             </div>
           </div>
         </div>
       </Link>
     </div>
   );
-}
+};
 
 export default MovieCard;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FC } from "react";
 import "./App.scss";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
@@ -6,8 +6,8 @@ import MovieDetail from "./components/MovieDetail/MovieDetail";
 import PageNotFound from "./components/PageNotFound/PageNotFound";
 import Header from "./components/Header/Header";
 import Footer from "./components/Footer/Footer";
-//19:53
-function App() {
+
+const App: FC = () => {
   return (
     <div className="App">
       <Router>
@@ -19,7 +19,7 @@ function App() {
             <Route element={<PageNotFound />} />
           </Routes>
         </div>
-        
+
       </Router>
       <Footer />
     </div>

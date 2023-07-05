@@ -1,36 +1,38 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { FC } from "react";
 import Slider from "react-slick";
 import MovieCard from "../MovieCard/MovieCard";
 import "./MovieListing.scss";
 import { Settings } from "../../common/apis/settings";
+import { useAppSelector } from "../../features/store";
+import { IMovie } from "../../interfaces/movies";
+import { IMovies } from "../../interfaces/state";
 
-function MovieListing() {
-  const movies = useSelector((state) => state.movies.movies);
-  const shows = useSelector((state) => state.movies.shows);
-  console.log(movies);
+const MovieListing: FC = () => {
+  const movies = useAppSelector((state) => state.movies.movies);
+  const shows = useAppSelector((state) => state.movies.shows);
+
   let renderMovies,
-    renderShows = "";
+    renderShows;
 
   renderMovies =
-    movies.Response === "True" ? (
-      movies.Search.map((movie, index) => {
-        return <MovieCard key={index} data={movie} />;
+    movies && (movies as IMovies).Response === "True" ? (
+      (movies as IMovies).Search?.map((movie: IMovie, index: number) => {
+        return <MovieCard key={index} {...movie} />;
       })
     ) : (
       <div className="movies-error">
-        <h3>{movies.error}</h3>
+        <h3>{(movies as IMovies).error}</h3>
       </div>
     );
 
   renderShows =
-    shows.Response === "True" ? (
-      shows.Search.map((shows, index) => {
-        return <MovieCard key={index} data={shows} />;
+    (shows as IMovies).Response === "True" ? (
+      (shows as IMovies).Search?.map((shows: IMovie, index: number) => {
+        return <MovieCard key={index} {...shows} />;
       })
     ) : (
       <div className="shows-error">
-        <h3>{shows.error}</h3>
+        <h3>{(shows as IMovies).error}</h3>
       </div>
     );
 

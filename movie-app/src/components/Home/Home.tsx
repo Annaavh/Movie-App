@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { FC, useEffect } from "react";
 import MovieListing from "../MovieListing/MovieListing";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,12 +6,13 @@ import {
   fetchAsyncShows,
 } from "../../features/movies/movieSlice";
 import Loader from "../Loader/Loader";
+import { useAppDispatch, useAppSelector } from "../../features/store";
 
-function Home() {
-  const loading = useSelector((state) => state.movies.loading);
-  const dispatch = useDispatch();
-  const movieText = "Harry";
-  const showText = "Friends";
+const Home: FC = () => {
+  const loading = useAppSelector((state) => state.movies.loading);
+  const dispatch = useAppDispatch();
+  const movieText: string = "Harry";
+  const showText: string = "Friends";
   useEffect(() => {
     dispatch(fetchAsyncMovies(movieText));
     dispatch(fetchAsyncShows(showText));

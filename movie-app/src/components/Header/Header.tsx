@@ -1,30 +1,31 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import {
   fetchAsyncMovies,
   fetchAsyncShows,
 } from "../../features/movies/movieSlice";
-import user from "../../images/user.png";
+// import user from "../../images/user.png";
 import "./Header.scss";
+import { useAppDispatch, useAppSelector } from "../../features/store";
 
 
-function Header() {
+const Header: FC = () => {
   const navigate = useNavigate()
-  const [term, setTerm] = useState("");
-  const dispatch = useDispatch();
-  const movies = useSelector(state=>state.movies.movies);
-  const shows = useSelector(state=>state.movies.shows);
-  console.log(movies,"movies")
-  const submitHandler = (e) => {
+  const [term, setTerm] = useState<string>("");
+  const dispatch = useAppDispatch();
+  const movies = useAppSelector(state => state.movies.movies);
+  const shows = useAppSelector(state => state.movies.shows);
+
+  const submitHandler = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
-    if (term === ""){
+    if (term === "") {
       return alert("Please enter search term!");
-    } 
-     else if(movies.Response === "False" || shows.Response === "False") {
+    }
+    else if (movies.Response === "False" || shows.Response === "False") {
       alert("Searched movie or show is not found")
       window.location.reload()
-     }
+    }
 
     dispatch(fetchAsyncMovies(term));
     dispatch(fetchAsyncShows(term));
@@ -41,7 +42,7 @@ function Header() {
         <form onSubmit={submitHandler}>
           <input
             type="text"
-            onChange={(e) => setTerm(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) => setTerm(e.target.value)}
             value={term}
             placeholder="Search Movies Or Shows"
           />
@@ -52,7 +53,7 @@ function Header() {
       </div>
 
       <div className="user-image">
-        <img src={user} alt="user" />
+        {/* <img src={user} alt="user" /> */}
       </div>
     </div>
   );

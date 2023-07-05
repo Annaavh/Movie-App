@@ -1,7 +1,7 @@
-import React from "react";
+import React, { FC } from "react";
 import "./Loader.scss"
 
-function Loader() {
+const Loader: FC = () => {
   return (
     <div className="d-flex justify-content-center loader">
       <div className="spinner-border" role="status"></div>
